@@ -218,3 +218,49 @@ body {
 	color: #111;
 	border: 2px solid #111;
 }
+
+#ctrlSpace #saveCode {
+	height: 26px;
+	width: 120px;
+	padding: 0;
+	line-height: 1.6;
+	
+	position: relative;
+	bottom: 21px;
+	left: 146px;
+
+	background-color: #fff;
+	color: #111;
+	border: 2px solid #111;
+	font-size: 12pt;
+}
+#ctrlSpace #loadCode {
+	height: 26px;
+	width: 120px;
+	padding: 0;
+	line-height: 1.6;
+	
+	position: relative;
+	top: 12px;
+	
+	background-color: #fff;
+	color: #111;
+	border: 2px solid #111;
+	font-size: 12pt;
+}
+#ctrlSpace #code {
+	width: 228px;
+	height: 40px;
+	resize: none;
+	top: 12px;
+	bottom: 0;
+	padding: 4px;
+	position: relative;
+	
+	border: 2px solid #000;
+	background-color: #ddd;
+	font-family: sans-serif;
+	font-size: 12pt;
+	font-weight: 400;
+}
+

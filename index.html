@@ -98,6 +98,9 @@
 			<div class="active" onclick="switchMenu(0)">Body</div>
 			<div class="inactive" onclick="switchMenu(1)">Hardware</div>
 			<div class="inactive" onclick="switchMenu(2)">Neck & Head</div>
+			<div id="saveCode" onclick="genCode()">Save</div>
+			<div id="loadCode" onclick="applyCode()">Load</div>
+			<textarea id="code"></textarea>
 		</div>
 	</div>
 </body>
@@ -191,5 +194,81 @@ function switchMenu(num) {
 		window.alert("An Error Has Occured. We're Sorry!");
 		break;
 	}
+}
+
+function genCode() {
+	// format:
+	// pattern,color,opacity,burst,red/
+	// hasGuard,color,pupColor,bridge,plug,brass/
+	// fretboard,headstock/
+	var code = "";
+	
+	// body elements
+	nodes = document.getElementById("Grain").children;
+	for (var i = 0; i < nodes.length; i++){
+		if (nodes[i].checked) {
+			code += [i] + ",";
+			break;
+		}
+	}
+	code += document.getElementById("finishColor").value + ",";
+	code += document.getElementById("finishOpacity").value + ",";
+	code += document.getElementById("finishBurst").checked + ",";
+	code += document.getElementById("redBurst").checked + "/";
+	
+	// hardware elements
+	code += document.getElementById("hasGuard").checked + ",";
+	code += document.getElementById("guardColor").selectedIndex + ",";
+	code += document.getElementById("pupColor").selectedIndex + ",";
+	code += document.getElementById("bridgeStyle").selectedIndex + ",";
+	code += document.getElementById("hidePlug").checked + ",";
+	code += document.getElementById("brassed").checked + "/";
+	
+	// neck elements
+	code += document.getElementById("fretColor").selectedIndex + ",";
+	code += document.getElementById("headColor").selectedIndex;
+	
+	// set text field
+	document.getElementById("code").value = code;
+}
+
+function applyCode() {
+	var code = document.getElementById("code").value;
+	var lines = code.split("/");
+	
+	// set body
+	var vals = lines[0].split(",");
+	document.getElementById("Grain").children[vals[0]].checked = true;
+	document.getElementById("finishColor").value = vals[1];
+	document.getElementById("finishOpacity").value = vals[2];
+	if (vals[3] == "true")
+		document.getElementById("finishBurst").checked = true;
+	else document.getElementById("finishBurst").checked = false;
+	if (vals[4] == "true")
+		document.getElementById("redBurst").checked = true;
+	else document.getElementById("redBurst").checked = false;
+	
+	// set hardware
+	vals = lines[1].split(",");
+	if (vals[0] == "true")
+		document.getElementById("hasGuard").checked = true;
+	else document.getElementById("hasGuard").checked = false;
+	document.getElementById("guardColor").selectedIndex = vals[1];
+	document.getElementById("pupColor").selectedIndex = vals[2];
+	document.getElementById("bridgeStyle").selectedIndex = vals[3];
+	if (vals[4] == "true")
+		document.getElementById("hidePlug").checked = true;
+	else document.getElementById("hidePlug").checked = false;
+	if (vals[5] == "true")
+		document.getElementById("brassed").checked = true;
+	else document.getElementById("brassed").checked = false;
+	
+	// set neck
+	vals = lines[2].split(",");
+	document.getElementById("fretColor").selectedIndex = vals[0];
+	document.getElementById("headColor").selectedIndex = vals[1];
+	
+	// update
+	updateImage();
 }
 </script>
