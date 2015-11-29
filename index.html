@@ -37,6 +37,7 @@
 					<input type="color" id="finishColor"/>
 				<h3>Finish Opacity</h3><hr>
 					<input type="range" id="finishOpacity"/>
+					Front Plug: <input type="checkbox" id="hidePlug" checked/>
 					Burst: <input type="checkbox" id="finishBurst"/>
 					Red: <input type="checkbox" id="redBurst"/>
 			</div>
@@ -64,10 +65,15 @@
 				<h3>Bridge</h3><hr>
 					<h4>Style: </h4>
 					<select id="bridgeStyle">
-						<option value="Tremolo">Floating Tremolo</option>
+						<option value="floating">Floating Tremolo</option>
+						<option value="tune">Tune-o-Matic</option>
 					</select><br>
-					<h4>Front Plug: </h4><input type="checkbox" id="hidePlug" checked/>
-					<h4>Brass: </h4><input type="checkbox" id="brassed"/>
+					<h4>Color: </h4>
+					<select id="hwColor">
+						<option value="Chrome">Chrome</option>
+						<option value="Brass">Brass</option>
+						<option value="Black">Black</option>
+					</select>
 			</div>
 		
 		
@@ -102,7 +108,7 @@
 			<div class="inactive" onclick="switchMenu(2)">Neck & Head</div>
 			<div id="saveCode" onclick="genCode()">Save</div>
 			<div id="loadCode" onclick="applyCode()">Load</div>
-			<textarea id="code">1,#ff7d00,61,true,true/true,0,2,0,true,false/2,0,1</textarea>
+			<textarea id="code">1,#ff7d00,61,true,true,true/true,0,2,0,0/2,0,1</textarea>
 		</div>
 	</div>
 </body>
@@ -154,15 +160,16 @@ function updateImage() {
 	
 	document.getElementById("pupImg").setAttribute("src",
 		"img/hw" + document.getElementById("pupColor").value + ".png");
-	if (document.getElementById("brassed").checked) {
-		document.getElementById("hwImg").setAttribute("src", "img/extrasBrass.png");
-		document.getElementById("bridgeImg").setAttribute("src", "img/floatingBrass.png");
-		document.getElementById("plugImg").setAttribute("src", "img/plugBrass.png");
-	} else {
-		document.getElementById("hwImg").setAttribute("src", "img/extrasChrome.png");
-		document.getElementById("bridgeImg").setAttribute("src", "img/floatingChrome.png");
-		document.getElementById("plugImg").setAttribute("src", "img/plugChrome.png");
-	}
+		
+	document.getElementById("hwImg").setAttribute("src", "img/extras" + 
+		document.getElementById("hwColor").value + ".png");
+	document.getElementById("plugImg").setAttribute("src", "img/plug" + 
+		document.getElementById("hwColor").value  + ".png");
+	
+	document.getElementById("bridgeImg").setAttribute("src", "img/" +
+		document.getElementById("bridgeStyle").value + 
+		document.getElementById("hwColor").value + ".png");
+
 
 
 	// update neck attribs
@@ -221,6 +228,7 @@ function genCode() {
 	}
 	code += document.getElementById("finishColor").value + ",";
 	code += document.getElementById("finishOpacity").value + ",";
+	code += document.getElementById("hidePlug").checked + ",";
 	code += document.getElementById("finishBurst").checked + ",";
 	code += document.getElementById("redBurst").checked + "/";
 	
@@ -229,8 +237,7 @@ function genCode() {
 	code += document.getElementById("guardColor").selectedIndex + ",";
 	code += document.getElementById("pupColor").selectedIndex + ",";
 	code += document.getElementById("bridgeStyle").selectedIndex + ",";
-	code += document.getElementById("hidePlug").checked + ",";
-	code += document.getElementById("brassed").checked + "/";
+	code += document.getElementById("hwColor").selectedIndex + "/";
 	
 	// neck elements
 	code += document.getElementById("fretColor").selectedIndex + ",";
@@ -251,9 +258,12 @@ function applyCode() {
 	document.getElementById("finishColor").value = vals[1];
 	document.getElementById("finishOpacity").value = vals[2];
 	if (vals[3] == "true")
+		document.getElementById("hidePlug").checked = true;
+	else document.getElementById("hidePlug").checked = false;
+	if (vals[4] == "true")
 		document.getElementById("finishBurst").checked = true;
 	else document.getElementById("finishBurst").checked = false;
-	if (vals[4] == "true")
+	if (vals[5] == "true")
 		document.getElementById("redBurst").checked = true;
 	else document.getElementById("redBurst").checked = false;
 	
@@ -265,12 +275,7 @@ function applyCode() {
 	document.getElementById("guardColor").selectedIndex = vals[1];
 	document.getElementById("pupColor").selectedIndex = vals[2];
 	document.getElementById("bridgeStyle").selectedIndex = vals[3];
-	if (vals[4] == "true")
-		document.getElementById("hidePlug").checked = true;
-	else document.getElementById("hidePlug").checked = false;
-	if (vals[5] == "true")
-		document.getElementById("brassed").checked = true;
-	else document.getElementById("brassed").checked = false;
+	document.getElementById("hwColor").selectedIndex = vals[4];
 	
 	// set neck
 	vals = lines[2].split(",");
