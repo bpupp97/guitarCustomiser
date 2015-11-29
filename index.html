@@ -14,13 +14,14 @@
 			<img id="finishImg" src=""\>
 			<img id="burstImg" src="img/stratBurst.png"\>
 			<img id="bodyImg" src="img/stratBody.png"\>
-			<img id="plugImg" src="img/frontPlug.png"\>
 			<img id="guardImg" src="img/stratPGWhite.png"\>
 			<img id="pupImg" src="img/hwCream.png"\>
-			<img id="bridgeImg" src="img/tremolo.png"\>
+			<img id="bridgeImg" src="img/floatingChrome.png"\>
+			<img id="plugImg" src="img/plugChrome.png"\>
 			<img id="fretImg" src="img/fretRosewood.png"\>
 			<img id="headImg" src="img/headFenderPlain.png"\>
-			<img id="hwImg" src="img/hwChrome.png"\>
+			<img id="hwImg" src="img/extrasChrome.png"\>
+			<img id="stringImg" src="img/strings.png"\>
 		</div>
 		<div class="box" id="optBox">
 			<h2 id="optTitle">Body Options</h2>
@@ -64,9 +65,6 @@
 					<h4>Style: </h4>
 					<select id="bridgeStyle">
 						<option value="Tremolo">Floating Tremolo</option>
-						<option value="Floyd">Floyd Rose</option>
-						<option value="Hardtail">Hardtail</option>
-						<option value="Tune">Tune-O-Matic</option>
 					</select><br>
 					<h4>Front Plug: </h4><input type="checkbox" id="hidePlug" checked/>
 					<h4>Brass: </h4><input type="checkbox" id="brassed"/>
@@ -82,6 +80,10 @@
 						<option value="Stained">Stained</option>
 					</select>
 				<h3>Headstock</h3><hr>
+					<h4>Brand: </h4>
+					<select id="headBrand">
+						<option value="Fender">Fender</option>
+					</select>
 					<h4>Finish: </h4> 
 					<select id="headColor">
 						<option value="Plain">Plain</option>
@@ -152,10 +154,15 @@ function updateImage() {
 	
 	document.getElementById("pupImg").setAttribute("src",
 		"img/hw" + document.getElementById("pupColor").value + ".png");
-	if (document.getElementById("brassed").checked)
-		document.getElementById("hwImg").setAttribute("src", "img/hwBrass.png");
-	else
-		document.getElementById("hwImg").setAttribute("src", "img/hwChrome.png");
+	if (document.getElementById("brassed").checked) {
+		document.getElementById("hwImg").setAttribute("src", "img/extrasBrass.png");
+		document.getElementById("bridgeImg").setAttribute("src", "img/floatingBrass.png");
+		document.getElementById("plugImg").setAttribute("src", "img/plugBrass.png");
+	} else {
+		document.getElementById("hwImg").setAttribute("src", "img/extrasChrome.png");
+		document.getElementById("bridgeImg").setAttribute("src", "img/floatingChrome.png");
+		document.getElementById("plugImg").setAttribute("src", "img/plugChrome.png");
+	}
 
 
 	// update neck attribs
@@ -163,7 +170,8 @@ function updateImage() {
 		"img/fret" + document.getElementById("fretColor").value + ".png");
 		
 	document.getElementById("headImg").setAttribute("src",
-		"img/headFender" + document.getElementById("headColor").value + ".png");
+		"img/head" + document.getElementById("headBrand").value + 
+		document.getElementById("headColor").value + ".png");
 
 }
 
@@ -226,6 +234,7 @@ function genCode() {
 	
 	// neck elements
 	code += document.getElementById("fretColor").selectedIndex + ",";
+	code += document.getElementById("headBrand").selectedIndex + ",";
 	code += document.getElementById("headColor").selectedIndex;
 	
 	// set text field
@@ -266,7 +275,8 @@ function applyCode() {
 	// set neck
 	vals = lines[2].split(",");
 	document.getElementById("fretColor").selectedIndex = vals[0];
-	document.getElementById("headColor").selectedIndex = vals[1];
+	document.getElementById("headBrand").selectedIndex = vals[1];
+	document.getElementById("headColor").selectedIndex = vals[2];
 	
 	// update
 	updateImage();
