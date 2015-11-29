@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Guitar Customiser</title>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	<div id="container">
+		<h1 id="title">Stratocaster Customiser Tool</h1>
+		<div class="box" id="imgSpace">
+			<img id="woodImg" src="img/woodStraight.jpg"\>
+			<img id="finishImg" src=""\>
+			<img id="burstImg" src="img/stratBurst.png"\>
+			<img id="bodyImg" src="img/stratBody.png"\>
+			<img id="plugImg" src="img/frontPlug.png"\>
+			<img id="guardImg" src="img/stratPGWhite.png"\>
+			<img id="pupImg" src="img/hwCream.png"\>
+			<img id="bridgeImg" src="img/tremolo.png"\>
+			<img id="fretImg" src="img/fretRosewood.png"\>
+			<img id="headImg" src="img/headFenderPlain.png"\>
+			<img id="hwImg" src="img/hwChrome.png"\>
+		</div>
+		<div class="box" id="optBox">
+			<h2 id="optTitle">Body Options</h2>
+			
+			<div id="bodyOpt" class="shown">
+				<h3>Grain Pattern</h3><hr>
+					<div id="Grain">
+						<input type="radio" name="grain" checked> Straight  </input>
+						<input type="radio" name="grain"> Slanted  </input>
+						<input type="radio" name="grain"> Quilted  </input>
+					</div>
+				<h3>Finish Color</h3><hr>
+					<input type="color" id="finishColor"/>
+				<h3>Finish Opacity</h3><hr>
+					<input type="range" id="finishOpacity"/>
+					Burst: <input type="checkbox" id="finishBurst"/>
+					Red: <input type="checkbox" id="redBurst"/>
+			</div>
+			
+			<div id="hwOpt" class="hidden">
+				<h3 style="display: inline-block;">Pickguard</h3><hr>
+					<h4>Has pickguard: </h4><input type="checkbox" checked id="hasGuard"><br>
+					<h4>Color: </h4>
+					<select id="guardColor">
+						<option value="White">White</option>
+						<option value="Black">Black</option>
+						<option value="Cream">Cream</option>
+						<option value="Chrome">Chrome</option>
+						<option value="Brass">Brass</option>
+						<option value="Tortoise">Red Tortoiseshell</option>
+						<option value="Pearloid">White Pearloid</option>
+					</select>
+				<h3>Pickups</h3><hr>
+					<h4>Color: </h4>
+					<select id="pupColor">
+						<option value="White">White</option>
+						<option value="Black">Black</option>
+						<option value="Cream">Cream</option>
+					</select>
+				<h3>Bridge</h3><hr>
+					<h4>Style: </h4>
+					<select id="bridgeStyle">
+						<option value="Tremolo">Floating Tremolo</option>
+						<option value="Floyd">Floyd Rose</option>
+						<option value="Hardtail">Hardtail</option>
+						<option value="Tune">Tune-O-Matic</option>
+					</select><br>
+					<h4>Plug: </h4><input type="checkbox" id="hidePlug" checked/>
+					<h4>Brass: </h4><input type="checkbox" id="brassed"/>
+			</div>
+		
+		
+			<div id="neckOpt" class="hidden">
+				<h3>Fretboard</h3><hr>
+					<h4>Finish: </h4>
+					<select id="fretColor">
+						<option value="Rosewood">Rosewood</option>
+						<option value="Maple">Maple</option>
+						<option value="Stained">Stained</option>
+					</select>
+				<h3>Headstock</h3><hr>
+					<h4>Finish: </h4> 
+					<select id="headColor">
+						<option value="Plain">Plain</option>
+						<option value="Stained">Stained</option>
+						<option value="Black">Black</option>
+						<option value="Trans">Body</option>
+					</select>
+			</div>
+			
+			<button id="submit" onclick="updateImage()">Apply</button>
+		</div>
+		
+		<div class="box" id="ctrlSpace">
+			<div class="active" onclick="switchMenu(0)">Body</div>
+			<div class="inactive" onclick="switchMenu(1)">Hardware</div>
+			<div class="inactive" onclick="switchMenu(2)">Neck & Head</div>
+		</div>
+	</div>
+</body>
+
+<script>
+function hideMenus() {
+	var nodes = document.getElementById("optBox").children;
+	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i].className == "shown")
+			nodes[i].className = "hidden";
+	}
+	nodes = document.getElementById("ctrlSpace").children;
+	for (var i = 0; i < nodes.length; i++)
+		nodes[i].className = "inactive";
+}
+
+function updateImage() {
+	// update body attribs
+	if (document.getElementById("Grain").children[0].checked)
+		document.getElementById("woodImg").setAttribute("src", "img/woodStraight.jpg");
+	else if (document.getElementById("Grain").children[1].checked)
+		document.getElementById("woodImg").setAttribute("src", "img/woodSlant.jpg");
+	else if (document.getElementById("Grain").children[2].checked)
+		document.getElementById("woodImg").setAttribute("src", "img/woodQuilt.jpg");
+	document.getElementById("finishImg").style.backgroundColor = document.getElementById("finishColor").value;
+	document.getElementById("finishImg").style.opacity = document.getElementById("finishOpacity").value / 100;
+	if (document.getElementById("finishBurst").checked)
+		document.getElementById("burstImg").style.opacity = 1.0;
+	else
+		document.getElementById("burstImg").style.opacity = 0.0;	
+	if (document.getElementById("redBurst").checked)
+		document.getElementById("burstImg").setAttribute("src", "img/redStratBurst.png");
+	else
+		document.getElementById("burstImg").setAttribute("src", "img/stratBurst.png");
+	if (document.getElementById("hidePlug").checked)
+		document.getElementById("plugImg").style.opacity = 1.0;
+	else
+		document.getElementById("plugImg").style.opacity = 0.0;	
+		
+		
+	// update hardware attribs
+	if (document.getElementById("hasGuard").checked) {
+		document.getElementById("guardImg").style.opacity = 1.0;
+		document.getElementById("guardImg").setAttribute("src",
+		"img/stratPG" + document.getElementById("guardColor").value + ".png");
+	} else {
+		document.getElementById("guardImg").style.opacity = 0.0;
+	}
+	
+	document.getElementById("pupImg").setAttribute("src",
+		"img/hw" + document.getElementById("pupColor").value + ".png");
+	if (document.getElementById("brassed").checked)
+		document.getElementById("hwImg").setAttribute("src", "img/hwBrass.png");
+	else
+		document.getElementById("hwImg").setAttribute("src", "img/hwChrome.png");
+
+
+	// update neck attribs
+	document.getElementById("fretImg").setAttribute("src",
+		"img/fret" + document.getElementById("fretColor").value + ".png");
+		
+	document.getElementById("headImg").setAttribute("src",
+		"img/headFender" + document.getElementById("headColor").value + ".png");
+
+}
+
+function switchMenu(num) {
+	var title = document.getElementById("optTitle");
+	hideMenus();
+	document.getElementById("ctrlSpace").children[num].className = "active";
+	switch(num) {
+	case 0:
+		//body
+		title.innerHTML = "Body Options";
+		document.getElementById("bodyOpt").className = "shown";
+		break;
+	
+	case 1:
+		//hardware
+		title.innerHTML = "Hardware Options";
+		document.getElementById("hwOpt").className = "shown";
+		break;
+	
+	case 2:
+		//neck
+		title.innerHTML = "Neck Options";
+		document.getElementById("neckOpt").className = "shown";
+		break;
+		
+	default:
+		window.alert("An Error Has Occured. We're Sorry!");
+		break;
+	}
+}
+</script>
